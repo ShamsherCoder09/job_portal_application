@@ -90,6 +90,71 @@ export const login  = async(req, res)=>{
         })
 
     } catch (error) {
+        console.log(error);
+    }
+};
+
+// logout 
+export const logout = async (req, res)=>{
+    try {
+        return res.status(200).cookie("token", "",{maxAge:0}).json({
+            message:"logged out successfully",
+            success:true,
+        })
+    } catch (error) {
+        console.log(error)
+    }
+};
+
+// update user 
+export const updateUser = async (req, res)=>{
+    try {
+        const{fullName, email, phoneNumber, bio , skills} = req.body;
+        const file = req.file;
+        // cloudinary se aayega 
+
+        let skillsArray;
+        if(skills){
+            skillsArray = skills.split(",");
+        }
+
+        const userId = req.id; // middleware authentication
+        let user = await User.findById(userId);
+        if(!user){
+            return res.status(400).json({
+                message:"User not found",
+                success:false
+            });
+        }
+
+        // updating data
+        if(fullName) user.fullName = fullName;
+        if(email) user.email = email;
+        if(phoneNumber) user.phoneNumber= phoneNumber;
+        if(bio) user.profile.bio = bio;
+        if(skills) user.profile.skills = skills;
+
+        // resume comes later
+
+        await user.save();
+
+        user = {
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            phoneNumber :user.phoneNumber,
+            role: user.role,
+            profile: user.profile
+        }
+
+        return res.status(200).json({
+            message:"profile upadted successfully",
+            user,
+            success: true
+        });
+
         
+    } catch (error) {
+        console.log(error);
     }
 }
