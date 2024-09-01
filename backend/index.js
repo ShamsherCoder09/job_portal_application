@@ -15,12 +15,21 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
-const corsOption = {
-    origin:"http//localhost:5173",
-    credentials:true
-}
-app.use(cors(corsOption));
+// const corsOption = {
+//     origin:"http//localhost:5173",
+//     methods: 'GET,POST,PUT,DELETE',
+//     credentials:true
+// }
+// app.use(cors(corsOption));
 
+app.use(
+    cors({
+      origin: 'http://localhost:5173', // Replace with your frontend's URL
+      methods: 'GET,POST,PUT,DELETE',  // Specify the allowed HTTP methods
+      credentials: true,               // Enable cookies if required
+    //   allowedHeaders: 'Content-Type,Authorization', // Specify allowed headers
+    })
+  );
 
 const PORT =process.env.PORT ;
 

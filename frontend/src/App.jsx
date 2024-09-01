@@ -1,8 +1,9 @@
 
 import './App.css';
-import { createBrowserRouter } from 'react-router-dom';
-import Navbar from './components/shared/Navbar'
-import { Home } from 'lucide-react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Home from './components/Home';
+import Login from './components/auth/Login';
+import Signup from './components/auth/Signup';
 
 const appRouter = createBrowserRouter([
   {
@@ -25,7 +26,7 @@ function App() {
 
   return (
     <>
-    <Navbar />
+    <RouterProvider router={appRouter} />
     </>
   )
 }

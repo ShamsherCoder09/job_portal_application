@@ -4,8 +4,9 @@ import jwt from "jsonwebtoken"
 
 export const register = async(req, res)=>{
     try {
-        const{fullName, email, password , role, phoneNumber} = req.body;
-        if(!fullName || !email || !password || !role || !phoneNumber) {
+        const{fullname, email, password , role, phoneNumber} = req.body;
+        console.log(fullname, email, password , role, phoneNumber)
+        if(!fullname || !email || !password || !role || !phoneNumber) {
             return res.status(400).json({
                 message:"Something is missing",
                 success:false
@@ -21,7 +22,7 @@ export const register = async(req, res)=>{
         const hashPassword = await bcrypt.hash(password , 10);
         
         await User.create({
-            fullName,
+            fullname,
             email,
             password:hashPassword,
             phoneNumber,
@@ -40,7 +41,7 @@ export const register = async(req, res)=>{
 export const login  = async(req, res)=>{
     try {
         const { email, password,role} = req.body;
-        // console.log(email, password, role);
+        console.log(email, password, role);
         if(!email || !password || !role){
             return res.status(400).json({
                 message:"Something is missing",
@@ -77,7 +78,7 @@ export const login  = async(req, res)=>{
 
         user={
             id: user._id,
-            fullName:user.fullName,
+            fullname:user.fullname,
             email: user.email,
             phoneNumber: user.phoneNumber,
             role: user.role,
@@ -85,7 +86,7 @@ export const login  = async(req, res)=>{
         }
 
         return res.status(200).cookie("token", token, {maxAge: 1 * 24 * 60 * 60 * 1000, httpsOnly: true, sameSite: 'strict'}).json({
-            message:`Welcome back ${user.fullName}`,
+            message:`Welcome back ${user.fullname}`,
             user,
             success:true
         })
